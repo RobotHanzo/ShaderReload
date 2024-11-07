@@ -30,18 +30,16 @@ public abstract class KeyboardMixin {
     @Inject(method = "processF3", at = @At("RETURN"), cancellable = true)
     void onProcessF3(int key, CallbackInfoReturnable<Boolean> cir) {
         if (key == ShaderReload.GLFW_KEY) {
-            ShaderReload.reloadShaders();
             cir.setReturnValue(true);
         }
     }
 
-    @Inject(method = "onKey", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "onKey", at = @At(value = "HEAD"))
     void onOnKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         if (!InputUtil.isKeyPressed(window, GLFW.GLFW_KEY_F3) || key != ShaderReload.GLFW_KEY) return;
         if (action != 0) {
             ShaderReload.reloadShaders();
         }
-        ci.cancel();
     }
 
     @Inject(method = "onChar", at = @At(value = "HEAD"), cancellable = true)
