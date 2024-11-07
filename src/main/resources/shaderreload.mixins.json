@@ -4,12 +4,9 @@
   "package": "suso.shaderreload.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "GameRendererMixin",
-    "GlProgramManagerMixin",
     "KeyboardInvoker",
     "KeyboardMixin",
-    "MinecraftClientMixin",
-    "WorldRendererMixin"
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
