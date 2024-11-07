@@ -5,9 +5,10 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "GameRendererMixin",
+    "GlProgramManagerMixin",
     "KeyboardInvoker",
     "KeyboardMixin",
-    "GlProgramManagerMixin",
+    "MinecraftClientMixin",
     "WorldRendererMixin"
   ],
   "injectors": {
