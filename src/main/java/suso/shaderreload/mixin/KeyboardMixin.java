@@ -20,17 +20,12 @@ import suso.shaderreload.ShaderReload;
 public abstract class KeyboardMixin {
     @Shadow @Final private MinecraftClient client;
 
-    @Inject(method = "processF3", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V",
-            ordinal = 10, shift = At.Shift.AFTER))
-    private void onProcessF3$addHelp(int key, CallbackInfoReturnable<Boolean> cir) {
-        client.inGameHud.getChatHud().addMessage(Text.translatable("debug.reload_shaders.help"));
-    }
-
     @Inject(method = "processF3", at = @At("RETURN"), cancellable = true)
     void onProcessF3(int key, CallbackInfoReturnable<Boolean> cir) {
         if (key == ShaderReload.GLFW_KEY) {
             cir.setReturnValue(true);
+        } else if (key == GLFW.GLFW_KEY_Q) {
+            client.inGameHud.getChatHud().addMessage(Text.translatable("debug.reload_shaders.help"));
         }
     }
 

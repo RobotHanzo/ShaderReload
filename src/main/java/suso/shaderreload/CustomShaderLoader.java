@@ -4,7 +4,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.*;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.resource.DefaultResourcePack;
-import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 
 import java.io.FileNotFoundException;
@@ -15,20 +14,6 @@ public class CustomShaderLoader extends ShaderLoader {
 
     public CustomShaderLoader(TextureManager textureManager) {
         super(textureManager, CustomShaderLoader::onShaderError);
-    }
-
-    @Override
-    public ShaderProgram getOrCreateProgram(ShaderProgramKey key) {
-        ShaderProgram result = super.getOrCreateProgram(key);
-        if(result != null) return result;
-
-        try {
-            return loadDefaultProgram(key);
-        } catch (Exception e) {
-            ShaderReload.printShaderException(e, true);
-        }
-
-        return null;
     }
 
     @Override
@@ -50,7 +35,7 @@ public class CustomShaderLoader extends ShaderLoader {
         ShaderReload.printShaderException(e, false);
     }
 
-    private ShaderProgram loadDefaultProgram(ShaderProgramKey key) throws FileNotFoundException {
+    private ShaderProgram loadDefaultProgram(ShaderProgram key) throws FileNotFoundException {
         return null;
     }
 

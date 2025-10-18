@@ -42,7 +42,7 @@ public class ShaderReload implements ClientModInitializer {
         SimpleResourceReload.start(client.getResourceManager(), List.of(shaderLoader, client.worldRenderer), Util.getMainWorkerExecutor(), client, CompletableFuture.completedFuture(Unit.INSTANCE), false).whenComplete().whenComplete((result, throwable) -> {
             reloading = false;
             if(throwable == null) {
-                ((KeyboardInvoker) client.keyboard).invokeDebugLog("debug.reload_shaders.message");
+                ((KeyboardInvoker) client.keyboard).debugLog(Text.translatable("debug.reload_shaders.message"));
                 expectError = false;
                 return;
             }
@@ -52,7 +52,7 @@ public class ShaderReload implements ClientModInitializer {
             }
 
             if(!expectError) {
-                ((KeyboardInvoker) client.keyboard).invokeDebugError("debug.reload_shaders.unknown_error");
+                ((KeyboardInvoker) client.keyboard).debugLog(Text.translatable("debug.reload_shaders.unknown_error"));
                 LOGGER.error(throwable);
             }
 
@@ -70,14 +70,14 @@ public class ShaderReload implements ClientModInitializer {
                 throwable = cause;
             } else {
                 String translationKey = "debug.reload_shaders.unknown_error" + (builtin ? ".builtin" : "");
-                ((KeyboardInvoker) client.keyboard).invokeDebugError(translationKey);
+                ((KeyboardInvoker) client.keyboard).debugLog(Text.translatable(translationKey));
                 LOGGER.error(throwable);
                 return;
             }
         }
 
         String translationKey = "debug.reload_shaders.error" + (builtin ? ".builtin" : "");
-        ((KeyboardInvoker) client.keyboard).invokeDebugError(translationKey);
+        ((KeyboardInvoker) client.keyboard).debugLog(Text.translatable(translationKey));
         client.inGameHud.getChatHud().addMessage(Text.literal(throwable.getMessage()).formatted(Formatting.GRAY));
     }
 
