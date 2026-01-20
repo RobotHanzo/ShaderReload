@@ -10,7 +10,6 @@ import net.minecraft.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
-import suso.shaderreload.mixin.KeyboardInvoker;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -42,7 +41,7 @@ public class ShaderReload implements ClientModInitializer {
         SimpleResourceReload.start(client.getResourceManager(), List.of(shaderLoader, client.worldRenderer), Util.getMainWorkerExecutor(), client, CompletableFuture.completedFuture(Unit.INSTANCE), false).whenComplete().whenComplete((result, throwable) -> {
             reloading = false;
             if(throwable == null) {
-                ((KeyboardInvoker) client.keyboard).debugLog(Text.translatable("debug.reload_shaders.message"));
+                debugLog(Text.translatable("debug.reload_shaders.message"));
                 expectError = false;
                 return;
             }
@@ -52,7 +51,7 @@ public class ShaderReload implements ClientModInitializer {
             }
 
             if(!expectError) {
-                ((KeyboardInvoker) client.keyboard).debugLog(Text.translatable("debug.reload_shaders.unknown_error"));
+                debugLog(Text.translatable("debug.reload_shaders.unknown_error"));
                 LOGGER.error(throwable);
             }
 
@@ -70,14 +69,14 @@ public class ShaderReload implements ClientModInitializer {
                 throwable = cause;
             } else {
                 String translationKey = "debug.reload_shaders.unknown_error" + (builtin ? ".builtin" : "");
-                ((KeyboardInvoker) client.keyboard).debugLog(Text.translatable(translationKey));
+                debugLog(Text.translatable(translationKey));
                 LOGGER.error(throwable);
                 return;
             }
         }
 
         String translationKey = "debug.reload_shaders.error" + (builtin ? ".builtin" : "");
-        ((KeyboardInvoker) client.keyboard).debugLog(Text.translatable(translationKey));
+        debugLog(Text.translatable(translationKey));
         client.inGameHud.getChatHud().addMessage(Text.literal(throwable.getMessage()).formatted(Formatting.GRAY));
     }
 
@@ -87,5 +86,10 @@ public class ShaderReload implements ClientModInitializer {
 
     public static void tripError() {
         expectError = true;
+    }
+
+    private static void debugLog(Text text) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        client.inGameHud.getChatHud().addMessage(text);
     }
 }
