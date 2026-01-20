@@ -21,13 +21,13 @@ public abstract class KeyboardMixin {
     @Inject(method = "processF3", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V",
             ordinal = 10, shift = At.Shift.AFTER))
-    private void onProcessF3$addHelp(int key, CallbackInfoReturnable<Boolean> cir) {
+    private void onProcessF3$addHelp(InputUtil.Key key, CallbackInfoReturnable<Boolean> cir) {
         client.inGameHud.getChatHud().addMessage(Text.translatable("debug.reload_shaders.help"));
     }
 
     @Inject(method = "processF3", at = @At("RETURN"), cancellable = true)
-    void onProcessF3(int key, CallbackInfoReturnable<Boolean> cir) {
-        if (key == ShaderReload.GLFW_KEY) {
+    void onProcessF3(InputUtil.Key key, CallbackInfoReturnable<Boolean> cir) {
+        if (key.getCode() == ShaderReload.GLFW_KEY) {
             ShaderReload.reloadShaders();
             cir.setReturnValue(true);
         }
